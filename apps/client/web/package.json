@@ -1,0 +1,10 @@
+{
+  "name": "@flip-seven/apps-client-web",
+  "version": "0.0.1",
+  "private": true,
+  "nx": {
+    "name": "apps-client-web",
+    "projectType": "application",
+    "sourceRoot": "apps/client/web/src"
+  }
+}
