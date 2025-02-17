@@ -40,7 +40,8 @@
   "workspaces": [
     "packages/*",
     "apps/server/*",
-    "apps/client/*"
+    "apps/client/*",
+    "libs/client/*"
   ],
   "dependencies": {
     "@nestjs/common": "^10.0.2",

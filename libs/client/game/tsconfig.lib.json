@@ -1,0 +1,18 @@
+{
+  "extends": "../../../tsconfig.base.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "outDir": "dist",
+    "tsBuildInfoFile": "dist/tsconfig.lib.tsbuildinfo",
+    "emitDeclarationOnly": false,
+    "types": ["node"],
+    "lib": ["es2015", "dom"]
+  },
+  "include": ["src/**/*.ts", "../../../apps/client/web/src/game/setup.ts"],
+  "references": [
+    {
+      "path": "../../../apps/client/web/tsconfig.app.json"
+    }
+  ]
+}

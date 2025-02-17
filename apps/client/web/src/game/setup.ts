@@ -1,33 +1,30 @@
-import {} from 'phaser';
-import { PreloadScene } from './scenes/preload.scene';
+import { } from 'phaser';
+import { Socket } from 'socket.io-client';
 import { GameScene } from './scenes/game.scene';
-export function setup(container: string) {
+import { JoinScene } from './scenes/join.scene';
+import { PreloadScene } from './scenes/preload.scene';
+import { container } from './services/container';
+
+export function setup(id: string, socket: Socket, containerId: string = 'game') {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  container.set('gameId', id);
+  container.set('socket', socket);
+
   const config = {
     type: Phaser.AUTO,
-    parent: container,
+    parent: containerId,
     width: window.innerWidth,
     height: window.innerHeight,
-    scene: [PreloadScene, GameScene],
+    scene: [PreloadScene, JoinScene, GameScene],
     scale: {
-      mode: Phaser.Scale.RESIZE,
-      autoCenter: Phaser.Scale.CENTER_BOTH,
-    },
+      
+    }
   };
 
   const game = new Phaser.Game(config);
-
-  const onChangeScreen = () => {
-    game.scale.resize(window.innerWidth, window.innerHeight);
-  };
-
-  const _orientation =
-    screen.orientation ||
-    (screen as any).mozOrientation ||
-    (screen as any).msOrientation;
-
-  _orientation.addEventListener('change', () => onChangeScreen());
-
-  window.addEventListener('resize', () => onChangeScreen());
 
   return game;
 }

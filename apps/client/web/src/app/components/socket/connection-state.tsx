@@ -3,5 +3,9 @@ export type ConnectionStateProps = {
 };
 
 export default function ConnectionState({ isConnected }: ConnectionStateProps) {
-  return <div>{isConnected ? 'Connected' : 'Disconnected'}</div>;
+  return (
+    <div className="fixed left-4 bottom-4">
+      {isConnected ? 'Connected' : 'Disconnected'}
+    </div>
+  );
 }

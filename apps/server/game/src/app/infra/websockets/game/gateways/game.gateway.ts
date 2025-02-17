@@ -14,7 +14,7 @@ import { Game } from '../../../../domain/game/models/game.model';
 @WebSocketGateway({ namespace: 'game', cors: true })
 export class GameGateway {
   constructor(
-    private gameService: GameService,
+    private readonly gameService: GameService,
     private readonly connectionManager: ConnectionManager
   ) {}
 
@@ -46,13 +46,33 @@ export class GameGateway {
     player.setName(payload.name);
     game.addPlayer(player);
 
+    this.gameService.saveGame(game.getId());
+
     this.connectionManager.addConnection(player.getId(), client);
     client.join(game.getId());
 
-    client.emit('join', game.serialize());
+    client.emit('join', { playerId: player.getId() });
     client.to(game.getId()).emit('player-joined', player.serialize());
   }
 
   @SubscribeMessage('leave')
   async handleLeave(): Promise<void> {}
+
+  @SubscribeMessage('game')
+  async game(
+    @MessageBody() payload: { gameId: string; playerId: string }
+  ): Promise<WsResponse> {
+    const game = await this.gameService.getGame(payload.gameId);
+    if (!game) {
+      return {
+        event: 'game',
+        data: { error: 'Game not found' },
+      };
+    }
+
+    return {
+      event: 'game',
+      data: game.serialize(),
+    };
+  }
 }

@@ -17,6 +17,14 @@ export class GameService {
     return game;
   }
 
+  async saveGame(gameId: string) {
+    const game = this.games.get(gameId);
+    if (!game) {
+      throw new Error('Game not found');
+    }
+    await this.storeToStorage(game);
+  }
+
   async createGame(game: Game): Promise<void> {
     game.setId(this.generateUuid());
     this.games.set(game.getId(), game);
